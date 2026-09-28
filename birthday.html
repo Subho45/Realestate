@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Birthday Countdown – 30 September</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#fff7ee;--gold:#ffd166;--pink:#ff5e9c;--glass:rgba(255,255,255,.08);
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:#0a031c;color:var(--ink);font-family:"Fredoka","Trebuchet MS",system-ui,sans-serif;
+  display:flex;align-items:center;justify-content:center;text-align:center;overflow-x:hidden;padding:20px 14px}
+canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#bg{z-index:0}#fx{z-index:3}
+main{position:relative;z-index:2;width:100%;max-width:860px;perspective:1000px}
+.cake{width:clamp(90px,20vw,140px);filter:drop-shadow(0 12px 24px rgba(255,94,156,.45));animation:float 4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+.fl{transform-box:fill-box;transform-origin:50% 100%;animation:fl .18s ease-in-out infinite alternate;filter:drop-shadow(0 0 6px #ffb347)}
+.fl:nth-of-type(2){animation-delay:-.07s}.fl:nth-of-type(3){animation-delay:-.12s}
+@keyframes fl{to{transform:scale(.8,1.18) skewX(6deg)}}
+h1{font-weight:400;line-height:1.05;margin:6px 0 8px}
+.small{display:block;font-family:"Fredoka",sans-serif;font-weight:600;font-size:clamp(1rem,3.4vw,1.5rem);letter-spacing:.35em;opacity:.85}
+#who{display:block;font-family:"Pacifico","Brush Script MT",cursive;font-size:clamp(2.4rem,10vw,5.2rem);padding:.1em .15em;
+  background:linear-gradient(90deg,#ffd166,#ff5e9c,#8ecbff,#ffd166);background-size:300%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite;
+  filter:drop-shadow(0 0 18px rgba(255,94,156,.55))}
+@keyframes shine{to{background-position:300% 0}}
+.sub{margin:6px 0 28px;font-size:clamp(.95rem,2.8vw,1.2rem);opacity:.85}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,2.5vw,22px);transform-style:preserve-3d;
+  transition:transform .25s ease-out;will-change:transform}
+.box{position:relative;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.22),var(--glass) 60%);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 14px 44px rgba(0,0,0,.45),inset 0 0 30px rgba(255,255,255,.06);
+  transform:translateZ(30px)}
+.box svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.tr{fill:none;stroke:rgba(255,255,255,.14);stroke-width:3}
+.pr{fill:none;stroke:url(#g);stroke-width:4;stroke-linecap:round;stroke-dasharray:289.03;stroke-dashoffset:289.03;
+  transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1);
+  filter:drop-shadow(0 0 5px rgba(255,209,102,.9))}
+.in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.n{font-weight:600;font-size:clamp(1.5rem,7.4vw,3.6rem);line-height:1;color:var(--gold);font-variant-numeric:tabular-nums;
+  text-shadow:0 0 22px rgba(255,209,102,.75)}
+.n.flip{animation:flip .55s cubic-bezier(.3,1.4,.5,1)}
+@keyframes flip{0%{transform:rotateX(90deg);opacity:0}100%{transform:none;opacity:1}}
+.l{font-size:clamp(.55rem,2vw,.9rem);letter-spacing:.18em;opacity:.8;margin-top:.2em;text-transform:uppercase}
+.bar{margin-top:32px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+input{font:inherit;padding:10px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);
+  color:var(--ink);width:min(250px,100%);text-align:center}
+input::placeholder{color:rgba(255,247,238,.65)}
+button{font:inherit;font-weight:600;padding:10px 20px;border-radius:999px;border:0;cursor:pointer;color:#3a1450;
+  background:linear-gradient(135deg,#ffd166,#ff9ecb);box-shadow:0 6px 20px rgba(255,158,203,.35);transition:transform .15s}
+button:hover{transform:translateY(-2px) scale(1.04)}
+button:focus-visible,input:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.party .grid,.party .sub{display:none}
+.party .small{animation:none}
+.ltr{display:inline-block;font-family:"Pacifico",cursive;font-size:clamp(2.4rem,11vw,6rem);
+  background:linear-gradient(180deg,#fff,#ffd166 55%,#ff5e9c);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 20px rgba(255,209,102,.7));animation:drop .8s cubic-bezier(.2,1.5,.4,1) both,bob 2.4s ease-in-out infinite}
+@keyframes drop{from{opacity:0;transform:translateY(-70px) scale(.4) rotate(-14deg);filter:blur(10px)}}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.pname{display:block;font-family:"Pacifico",cursive;font-size:clamp(2rem,9vw,4.6rem);color:var(--pink);
+  text-shadow:0 0 24px rgba(255,94,156,.8);animation:drop 1s .9s cubic-bezier(.2,1.5,.4,1) both}
+@media (prefers-reduced-motion:reduce){.cake,.fl,#who,.ltr,.pname{animation:none}.pr{transition:none}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas><canvas id="fx"></canvas>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#ff5e9c"/></linearGradient>
+</defs></svg>
+
+<main id="app">
+  <svg class="cake" viewBox="0 0 120 110" aria-hidden="true">
+    <ellipse cx="60" cy="99" rx="54" ry="8" fill="rgba(255,255,255,.2)"/>
+    <rect x="14" y="66" width="92" height="30" rx="9" fill="#ff7aa8"/><rect x="14" y="66" width="92" height="8" rx="4" fill="#fff" opacity=".85"/>
+    <rect x="24" y="44" width="72" height="26" rx="9" fill="#ffd166"/><rect x="24" y="44" width="72" height="8" rx="4" fill="#fff" opacity=".85"/>
+    <rect x="34" y="24" width="52" height="24" rx="9" fill="#b388ff"/><rect x="34" y="24" width="52" height="8" rx="4" fill="#fff" opacity=".85"/>
+    <circle cx="46" cy="86" r="3" fill="#ff3d6e"/><circle cx="60" cy="88" r="3" fill="#ff3d6e"/><circle cx="74" cy="86" r="3" fill="#ff3d6e"/>
+    <rect x="44" y="12" width="4" height="14" rx="2" fill="#4cc9f0"/><rect x="58" y="12" width="4" height="14" rx="2" fill="#7bd88f"/><rect x="72" y="12" width="4" height="14" rx="2" fill="#ff9f68"/>
+    <ellipse class="fl" cx="46" cy="6" rx="3.4" ry="6" fill="#ffb347"/>
+    <ellipse class="fl" cx="60" cy="6" rx="3.4" ry="6" fill="#ffd166"/>
+    <ellipse class="fl" cx="74" cy="6" rx="3.4" ry="6" fill="#ffb347"/>
+  </svg>
+
+  <h1 id="title"><span class="small">COUNTDOWN TO</span><b id="who">Birthday</b></h1>
+  <p class="sub" id="sub">Get ready to celebrate on 30 September!</p>
+
+  <div class="grid" id="grid" role="timer" aria-live="off">
+    <div class="box"><svg viewBox="0 0 100 100"><circle class="tr" cx="50" cy="50" r="46"/><circle class="pr" id="rd" cx="50" cy="50" r="46"/></svg><div class="in"><span class="n" id="d">00</span><span class="l">Days</span></div></div>
+    <div class="box"><svg viewBox="0 0 100 100"><circle class="tr" cx="50" cy="50" r="46"/><circle class="pr" id="rh" cx="50" cy="50" r="46"/></svg><div class="in"><span class="n" id="h">00</span><span class="l">Hours</span></div></div>
+    <div class="box"><svg viewBox="0 0 100 100"><circle class="tr" cx="50" cy="50" r="46"/><circle class="pr" id="rm" cx="50" cy="50" r="46"/></svg><div class="in"><span class="n" id="m">00</span><span class="l">Minutes</span></div></div>
+    <div class="box"><svg viewBox="0 0 100 100"><circle class="tr" cx="50" cy="50" r="46"/><circle class="pr" id="rs" cx="50" cy="50" r="46"/></svg><div class="in"><span class="n" id="s">00</span><span class="l">Seconds</span></div></div>
+  </div>
+
+  <div class="bar">
+    <input id="name" maxlength="24" placeholder="Birthday person's name" aria-label="Birthday person's name">
+    <button id="set">Set name</button>
+    <button id="boom">🎆 Fireworks</button>
+    <button id="prev">🎉 Preview party</button>
+  </div>
+</main>
+
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i)};
+var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+var dpr=Math.min(window.devicePixelRatio||1,2), W=0,H=0, mx=0,my=0;
+var bg=$("bg"),bx=bg.getContext("2d"),fc=$("fx"),fx=fc.getContext("2d");
+function size(){W=innerWidth;H=innerHeight;[bg,fc].forEach(function(c){c.width=W*dpr;c.height=H*dpr;c.getContext("2d").setTransform(dpr,0,0,dpr,0,0)})}
+addEventListener("resize",size);size();
+
+/* ---------- Date logic (30 Sep, local time) ---------- */
+function target(){var n=new Date(),y=n.getFullYear();
+  if(n>=new Date(y,9,1))return new Date(y+1,8,30);return new Date(y,8,30)}
+function isBday(){var n=new Date();return n.getMonth()===8&&n.getDate()===30}
+
+/* ---------- Name ---------- */
+var nm="";
+try{nm=localStorage.getItem("bday-name")||"";$("name").value=nm}catch(e){}
+function showName(){$("who").textContent=nm?nm+"'s Birthday":"Birthday"}
+showName();
+$("set").onclick=function(){nm=$("name").value.trim();showName();if(partyOn)party(true);try{localStorage.setItem("bday-name",nm)}catch(e){}};
+$("name").addEventListener("keydown",function(e){if(e.key==="Enter")$("set").click()});
+
+/* ---------- Countdown + rings ---------- */
+var C=289.03,last={},maxD=0;
+function ring(id,f){$(id).style.strokeDashoffset=C*(1-Math.max(0,Math.min(1,f)))}
+function tick(){
+  if(isBday()&&!partyOn)party(true);
+  if(partyOn)return;
+  var diff=target()-new Date();if(diff<0)diff=0;
+  var v={d:Math.floor(diff/864e5),h:Math.floor(diff/36e5)%24,m:Math.floor(diff/6e4)%60,s:Math.floor(diff/1e3)%60};
+  maxD=Math.max(maxD,v.d,1);
+  for(var k in v){var t=("0"+v[k]).slice(-2);if(v[k]>99)t=String(v[k]);
+    if(last[k]!==t){var e=$(k);e.textContent=t;e.classList.remove("flip");void e.offsetWidth;e.classList.add("flip");last[k]=t}}
+  ring("rd",v.d/Math.min(maxD,30));ring("rh",v.h/24);ring("rm",v.m/60);ring("rs",(v.s+1)/60);
+}
+tick();setInterval(tick,250);
+
+/* ---------- Party mode ---------- */
+var partyOn=false,forced=false;
+function party(on){
+  partyOn=on;document.body.classList.toggle("party",on);
+  if(on){
+    var t="Happy Birthday!",h='<span class="small">🎂 CELEBRATE 🎂</span>';
+    t.split("").forEach(function(c,i){h+=c===" "?" ":'<span class="ltr" style="animation-delay:'+(i*.06)+"s,"+(i*.06+.9)+'s">'+c+"</span>"});
+    if(nm)h+='<span class="pname">'+nm.replace(/</g,"&lt;")+"</span>";
+    $("title").innerHTML=h;$("prev").textContent="⏪ Back to countdown";
+    for(var i=0;i<6;i++)setTimeout(function(){launch(Math.random()*W*.8+W*.1,H*(.15+Math.random()*.3))},i*350);
+  }else{
+    $("title").innerHTML='<span class="small">COUNTDOWN TO</span><b id="who"></b>';showName();
+    $("prev").textContent="🎉 Preview party";last={};
+  }
+}
+$("prev").onclick=function(){if(isBday())return;party(!partyOn)};
+setInterval(function(){if(partyOn&&!reduce){launch(Math.random()*W*.9+W*.05,H*(.12+Math.random()*.38));if(Math.random()<.5)launch(Math.random()*W,H*(.1+Math.random()*.4))}},800);
+setInterval(function(){if(!partyOn&&!reduce&&!document.hidden)launch(Math.random()*W*.8+W*.1,H*(.12+Math.random()*.25))},4200);
+
+/* ---------- 3D tilt + parallax ---------- */
+addEventListener("pointermove",function(e){
+  mx=e.clientX/W-.5;my=e.clientY/H-.5;
+  if(!reduce)$("grid").style.transform="rotateX("+(-my*10)+"deg) rotateY("+(mx*12)+"deg)";
+  if(!reduce&&e.pointerType!=="touch"&&Math.random()<.6)spark(e.clientX,e.clientY);
+});
+
+/* ---------- Background: aurora + stars + bokeh ---------- */
+var blobs=[[280,.00031,0],[320,.00023,2],[190,.00037,4],[340,.00027,1]].map(function(a,i){return{h:a[0],s:a[1],p:a[2],r:.55+i*.06}});
+var stars=[];for(var i=0;i<160;i++)stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.3+.2,p:Math.random()*6,s:.6+Math.random()*2});
+var orbs=[];for(i=0;i<26;i++)orbs.push({x:Math.random()*W,y:Math.random()*H,r:8+Math.random()*38,v:.15+Math.random()*.5,h:Math.random()*80+300,a:.05+Math.random()*.1,p:Math.random()*6});
+function drawBg(t){
+  bx.globalCompositeOperation="source-over";bx.fillStyle="#0a031c";bx.fillRect(0,0,W,H);
+  bx.globalCompositeOperation="lighter";
+  blobs.forEach(function(b){
+    var x=W*(.5+.38*Math.sin(t*b.s+b.p))+mx*50,y=H*(.5+.32*Math.cos(t*b.s*1.4+b.p))+my*40,r=Math.max(W,H)*b.r;
+    var g=bx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,"hsla("+b.h+",90%,55%,.30)");g.addColorStop(1,"hsla("+b.h+",90%,40%,0)");
+    bx.fillStyle=g;bx.fillRect(0,0,W,H)});
+  stars.forEach(function(s){bx.globalAlpha=.25+.75*Math.abs(Math.sin(t*.001*s.s+s.p));bx.fillStyle="#fff";
+    bx.beginPath();bx.arc(s.x*W-mx*12*s.r,s.y*H-my*8*s.r,s.r,0,6.283);bx.fill()});
+  bx.globalAlpha=1;
+  orbs.forEach(function(o){o.y-=o.v;if(o.y<-o.r*2){o.y=H+o.r;o.x=Math.random()*W}
+    var x=o.x+Math.sin(t*.0005+o.p)*20-mx*30,g=bx.createRadialGradient(x,o.y,0,x,o.y,o.r);
+    g.addColorStop(0,"hsla("+o.h+",95%,70%,"+o.a*1.6+")");g.addColorStop(.7,"hsla("+o.h+",95%,65%,"+o.a+")");g.addColorStop(1,"hsla("+o.h+",95%,65%,0)");
+    bx.fillStyle=g;bx.beginPath();bx.arc(x,o.y,o.r,0,6.283);bx.fill()});
+}
+
+/* ---------- Fireworks (rockets, bursts, hearts, sparkles) ---------- */
+var rockets=[],parts=[];
+function launch(x,y){
+  rockets.push({x:W/2+(x-W/2)*.3+(Math.random()-.5)*80,y:H+10,tx:x,ty:y,h:Math.random()*360,vy:-Math.sqrt(2*.12*(H-y)),g:.12,vx:0});
+  var r=rockets[rockets.length-1];r.vx=(x-r.x)/(Math.abs(r.vy)/.12);
+}
+function explode(r){
+  var n=reduce?40:110,type=Math.random(),h=r.h;
+  for(var i=0;i<n;i++){var a=i/n*6.283,s,vx,vy;
+    if(type<.28){var k=a;vx=16*Math.pow(Math.sin(k),3)/3.4;vy=-(13*Math.cos(k)-5*Math.cos(2*k)-2*Math.cos(3*k)-Math.cos(4*k))/3.4;h=345}
+    else if(type<.6){s=5.2;vx=Math.cos(a)*s;vy=Math.sin(a)*s}
+    else{s=Math.random()*6.2;a=Math.random()*6.283;vx=Math.cos(a)*s;vy=Math.sin(a)*s}
+    parts.push({x:r.x,y:r.y,vx:vx,vy:vy,a:1,d:.009+Math.random()*.01,h:h+(Math.random()*40-20),z:1.6+Math.random()*1.4,g:.045})}
+  for(i=0;i<14;i++)parts.push({x:r.x,y:r.y,vx:(Math.random()-.5)*2,vy:(Math.random()-.5)*2,a:1,d:.03,h:50,z:4,g:0});
+}
+function spark(x,y){parts.push({x:x,y:y,vx:(Math.random()-.5)*1.4,vy:Math.random()*1.2,a:.9,d:.03,h:Math.random()*60+30,z:1.4+Math.random()*1.4,g:.03})}
+var lastT=0;
+function drawFx(t){
+  var dt=Math.min((t-lastT)/16.67||1,3);lastT=t;
+  fx.globalCompositeOperation="destination-out";fx.fillStyle="rgba(0,0,0,"+Math.min(.28*dt,.6)+")";fx.fillRect(0,0,W,H);
+  fx.globalCompositeOperation="lighter";
+  rockets=rockets.filter(function(r){
+    r.vy+=r.g*dt;r.x+=r.vx*dt;r.y+=r.vy*dt;
+    fx.fillStyle="hsl("+r.h+",100%,80%)";fx.beginPath();fx.arc(r.x,r.y,2.2,0,6.283);fx.fill();
+    if(r.vy>=-.6||r.y<=r.ty){explode(r);return false}return true});
+  parts=parts.filter(function(p){
+    p.vx*=Math.pow(.985,dt);p.vy=p.vy*Math.pow(.985,dt)+p.g*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.a-=p.d*dt;
+    if(p.a<=0)return false;
+    fx.fillStyle="hsla("+p.h+",100%,62%,"+p.a*.35+")";fx.beginPath();fx.arc(p.x,p.y,p.z*3,0,6.283);fx.fill();
+    fx.fillStyle="hsla("+p.h+",100%,78%,"+p.a+")";fx.beginPath();fx.arc(p.x,p.y,p.z,0,6.283);fx.fill();
+    return true});
+}
+addEventListener("pointerdown",function(e){if(e.target.closest("button,input"))return;launch(e.clientX,e.clientY)});
+$("boom").onclick=function(){for(var i=0;i<5;i++)setTimeout(function(){launch(Math.random()*W*.8+W*.1,H*(.12+Math.random()*.35))},i*260)};
+
+function frame(t){drawBg(t);drawFx(t);requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+setTimeout(function(){launch(W*.3,H*.25);launch(W*.7,H*.3)},500);
+})();
+</script>
+</body>
+</html>
